@@ -1,0 +1,59 @@
+metadata:
+  generateName: wf-output-parameter-
+spec:
+  entrypoint: output-parameter
+  arguments:
+    parameters:
+    - name: number1
+      value: 100
+    - name: number2
+      value: 50
+  templates:
+  - name: output-parameter
+    inputs:
+      parameters:
+        - name: number1
+        - name: number2
+    dag:
+      tasks:
+      - name: Task1
+        arguments:
+          parameters: [{name: text, value: "{{inputs.parameters.number1}}"}]
+        template: task-template
+      - name: Task2
+        arguments:
+          parameters: [{name: text, value: "{{inputs.parameters.number2}}"}]
+        template: task-template
+        dependencies: [Task1]
+      - name: Task3
+        template: task-output
+        dependencies: [Task1]
+      - name: Task4
+        arguments:
+          parameters: [{name: text, value: "{{tasks.Task3.outputs.result}}"}]
+        template: task-template
+        dependencies: [Task2, Task3]
+
+  - name: task-template
+    inputs:
+      parameters:
+      - name: text
+    script:
+      image: python:3.8-slim
+      command: [python]
+      source: |
+        p = {{inputs.parameters.text}} * 5
+        print(p)
+
+  - name: task-output
+    script:
+      image: node:9.1-alpine
+      command: [node]
+      source: |
+        var out = 500 + 1200;
+        console.log(out);
+
+  - name: deylay-template
+    suspend:
+      duration: "10s"
+
