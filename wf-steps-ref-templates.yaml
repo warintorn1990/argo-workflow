@@ -1,0 +1,19 @@
+metadata:
+  generateName: wf-steps-ref-templates-serial-
+spec:
+  entrypoint: steps-template-serial
+  templates:
+    - name: steps-template-serial
+      steps:
+        - - name: step1
+            templateRef:
+              name: task-template-1
+              template: task-template
+        - - name: step2
+            templateRef:
+              name: task-template-1
+              template: task-template
+        - - name: step3
+            templateRef:
+              name: task-template-1
+              template: task-template
