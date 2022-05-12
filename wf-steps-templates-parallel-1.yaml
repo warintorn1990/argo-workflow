@@ -7,11 +7,11 @@ spec:
    steps:
    - - name: step1
        template: task-template
-   - - name: step2
+     - name: step2
        template: task-template
      - name: step3
        template: task-template
-   - - name: step4
+     - name: step4
        template: task-template
  
  - name: task-template
